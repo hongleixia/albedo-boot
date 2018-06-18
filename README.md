@@ -22,7 +22,7 @@ AlbedoBoot 提供了常用工具进行封装，包括日志工具、缓存工具
 （用户、机构、区域）以及其它常用小工具等。另外还提供一个强大的在线 **代码生成** 工具，
 此工具提供简单的单表、树结构功能的生成，如果对外观要求不是很高，生成的功能就可以用了。
 
-当前版本为mybatis  hibernate 版本请切换分支
+当前版本为hibernate   mybatis版本请切换到主分支 master
 
 ## 目录结构
 
@@ -160,14 +160,14 @@ AlbedoBoot 提供了常用工具进行封装，包括日志工具、缓存工具
 
 引入 angularjs5 ，基于 METRONIC [模版](https://github.com/somewhereMrli/metronic.git) 快速启动(依赖nodejs环境，更新至最新版)
 
-### 调试模式启动
+### 调试模式
 1.  进入 albedo-boot-ui-angular 目录 运行 npm install , 可根据需要修改 proxy.conf.json 配置转发
-2.  启动albedo-boot-web/albedo-boot-web-rest AlbedoBootWebRest
+2.  启动albedo-boot-web/albedo-boot-web-starter AlbedoBootWebApp
 3.  启动 npm start 访问 http://localhost:4201
 
-### 单体应用
+### 单体应用 启动
  1.	启动redis 默认本地 127.0.0.1:6379
- 2.	启动albedo-boot-web/albedo-boot-web-starter AlbedoBootWebApp
+ 2.	mvn clean install 启动albedo-boot-web/albedo-boot-web-starter AlbedoBootWebApp
 
 ### spring cloud  
 
