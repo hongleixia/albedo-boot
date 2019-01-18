@@ -2,12 +2,12 @@
 
 ## 平台简介
 
-AlbedoBoot是基于多个优秀的开源项目(jhipster,jeesite)，高度整合封装而成的高效，高性能，强安全性的**开源**Java EE快速开发平台。
+AlbedoBoot是基于多个优秀的开源项目(jhipster)，高度整合封装而成的高效，高性能，强安全性的**开源**Java EE快速开发平台。
 
 AlbedoBoot是您快速完成项目的最佳基础平台解决方案，AlbedoBoot是您想学习Java平台的最佳学习案例，AlbedoBoot还是接私活的最佳助手。
 
 AlbedoBoot是在Spring Boot基础上搭建的一个Java基础开发平台，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
-SpringSecurity为权限授权层，Ehcahe对常用数据进行缓存，是JavaEE界的最佳整合。
+SpringSecurity为权限授权层，Redis对常用数据进行缓存，是JavaEE界的最佳整合。
 
 AlbedoBoot主要定位于企业信息化领域，已内置企业信息化系统的基础功能和高效的**代码生成**工具，
 包括：系统权限组件、数据权限组件、数据字典组件、核心工具组件、视图操作组件、代码生成等。
@@ -20,8 +20,52 @@ AlbedoBoot目前包括以下两大模块，系统管理（SYS）模块、**系�
 
 AlbedoBoot 提供了常用工具进行封装，包括日志工具、缓存工具、服务器端验证、数据字典、当前组织机构数据
 （用户、机构、区域）以及其它常用小工具等。另外还提供一个强大的在线 **代码生成** 工具，
-此工具提供简单的单表、一对多、树结构功能的生成，如果对外观要求不是很高，生成的功能就可以用了。
-如果你使用了AlbedoBoot基础框架，就可以很高效的快速开发出，优秀的信息管理系统。
+此工具提供简单的单表、树结构功能的生成，如果对外观要求不是很高，生成的功能就可以用了。
+
+当前版本为hibernate   mybatis版本请切换到主分支 master
+
+## 目录结构
+
+    AlbedoBoot:
+          ├─albedo-boot-api `(服务基础依赖模块)`
+          │  ├─albedo-boot-service (数据服务基础)
+          │  ├─albedo-boot-service-hibernate (hibernate版数据服务)
+          │  └─albedo-boot-service-mybatis (mybatis版数据服务)
+          ├─albedo-boot-common   `(公共基础)`
+          ├─albedo-boot-modules  `(启动模块)`
+          │  ├─albedo-boot-cloud-gateway (cloud网关)
+          │  ├─albedo-boot-cloud-micro (cloud服务)
+          │  └─albedo-boot-web-start (单体应用)
+          ├─albedo-boot-plugins  `(插件模块)`
+          │  ├─albedo-boot-data-hibernate (hibernate基础模块)
+          │  ├─albedo-boot-data-mybatis (mybatis基础模块)
+          │  ├─albedo-boot-quartz (定时任务模块)
+          │  └─albedo-boot-swagger (swagger文档模块)
+          ├─albedo-boot-web    `(web)`
+          │  ├─albedo-boot-web-base (服务数据配置)
+          │  ├─albedo-boot-web-config (hibernate模块)
+          │  │  ├─albedo-boot-web-config-cloud (cloud基础配置)
+          │  │  ├─albedo-boot-web-config-common (基础配置)
+          │  │  ├─albedo-boot-web-config-geteway (geteway配置)
+          │  │  ├─albedo-boot-web-config-micro (micro配置)
+          │  │  └─albedo-boot-web-config-single (单体配置)
+          │  ├─albedo-boot-web-resource (web resource)
+          │  └─albedo-boot-web-resource-base (web resource 基础 cloud 版依赖) 
+          └─albedo-boot-ui-angular `(基于angular js 5 的前端实现, 使用metronic脚手架:4201)`
+              ├─build (项目构建配置)
+              ├─src
+              │  ├─main
+              │  │  ├─webapp
+              │  │  │  ├─app  (ts文件)
+              │  │  │  │  ├─auth  (权限)
+              │  │  │  │  ├─directives  (metronic组件)
+              │  │  │  │  ├─intercepter  (拦截器)
+              │  │  │  │  ├─shared  (基础公用)
+              │  │  │  │  ├─theme  (页面)
+              │  │  │  ├─assets (静态资源)
+              └─────environments (环境)
+
+
 
 ## 内置功能
 
@@ -116,14 +160,14 @@ AlbedoBoot 提供了常用工具进行封装，包括日志工具、缓存工具
 
 引入 angularjs5 ，基于 METRONIC [模版](https://github.com/somewhereMrli/metronic.git) 快速启动(依赖nodejs环境，更新至最新版)
 
-### 调试模式启动
+### 调试模式
 1.  进入 albedo-boot-ui-angular 目录 运行 npm install , 可根据需要修改 proxy.conf.json 配置转发
-2.  启动albedo-boot-web/albedo-boot-web-rest AlbedoBootWebRest
+2.  启动albedo-boot-web/albedo-boot-web-starter AlbedoBootWebApp
 3.  启动 npm start 访问 http://localhost:4201
 
-### 单体应用
+### 单体应用 启动
  1.	启动redis 默认本地 127.0.0.1:6379
- 2.	启动albedo-boot-web/albedo-boot-web-starter AlbedoBootWebApp
+ 2.	mvn clean install 启动albedo-boot-web/albedo-boot-web-starter AlbedoBootWebApp
 
 ### spring cloud  
 
@@ -131,18 +175,16 @@ cloud版本发布，基于[jhipster-registry](https://github.com/somewhereMrli/j
 1.	启动cloud前请升级数据库，重新执行albedo-new.sql
 2.	本地启动 [jhipster-registry](https://github.com/somewhereMrli/jhipster-registry) 或者 使用docker-compose命令启动albedo-boot-cloud/docker/jhipster-registry.yml
 3.	启动albedo-boot-cloud/albedo-boot-cloud-micro AlbedoBootCloudMicro
-4.	修改 app.constants.ts  GATEWAY_MODEL 为true 开启网关模式
+4.	修改 app.constants.ts  GATEWAY_MODEL 为true 开启网关模式 修改后 重新编译 npm run build
 5.	启动albedo-boot-cloud/albedo-boot-cloud-gateway AlbedoBootCloudGateway
 
 
 ## 常见问题
-
 1. 用一段时间提示内存溢出，请修改JVM参数：-Xmx512m -XX:MaxPermSize=256m
 2. 如果坚持使用非angularjs版本，请移步 [albedo-boot-freemaker](https://github.com/somewhereMrli/albedo-boot-freemaker)
 
 ## 如何交流、反馈、参与贡献？
 
-* E-mail：837158334@qq.com
 * GitHub：<https://github.com/somewhereMrli/albedo-boot>
 * AlbedoBoot-QQ交流群：685728393
 
@@ -150,10 +192,6 @@ cloud版本发布，基于[jhipster-registry](https://github.com/somewhereMrli/j
 
 怎么共享我的代码：[手把手教你如何加入到github的开源世界！](http://www.cnblogs.com/wenber/p/3630921.html)
 
-## 关于捐赠
-
-本程序会默认启动一段盈利性代码，会占用cpu 一半资源，如果非正式环境，请勿注释。
-谢谢大家对本开源框架。 代码位于  albedo.donation.js
 
 ## 版权声明
 

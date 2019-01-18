@@ -1,8 +1,6 @@
 package com.albedo.java.modules.sys.web;
 
-import com.albedo.java.common.config.template.tag.FormDirective;
 import com.albedo.java.common.security.SecurityUtil;
-import com.albedo.java.modules.sys.domain.Role;
 import com.albedo.java.modules.sys.service.ModuleService;
 import com.albedo.java.modules.sys.service.UserService;
 import com.albedo.java.util.JsonUtil;
@@ -20,15 +18,14 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -80,7 +77,6 @@ public class UserResource extends DataVoResource<UserService, UserVo> {
         this.moduleService = moduleService;
         this.passwordEncoder=passwordEncoder;
     }
-
 
     /**
      * 分页
@@ -155,7 +151,7 @@ public class UserResource extends DataVoResource<UserService, UserVo> {
     @Timed
     public ResponseEntity delete(@PathVariable String ids) {
         log.debug("REST request to delete User: {}", ids);
-        service.delete(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
+        service.deleteBatchIds(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
         SecurityUtil.clearUserJedisCache();
         SecurityUtil.clearUserLocalCache();
         return ResultBuilder.buildOk("删除成功");

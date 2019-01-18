@@ -1,14 +1,11 @@
 package com.albedo.java.modules.sys.web;
 
 import com.albedo.java.common.security.SecurityUtil;
-import com.albedo.java.common.security.SecurityUtil;
 import com.albedo.java.modules.sys.service.AreaService;
 import com.albedo.java.util.JsonUtil;
-import com.albedo.java.util.PublicUtil;
 import com.albedo.java.util.StringUtil;
 import com.albedo.java.util.domain.Globals;
 import com.albedo.java.util.domain.PageModel;
-import com.albedo.java.util.exception.RuntimeMsgException;
 import com.albedo.java.vo.sys.AreaVo;
 import com.albedo.java.vo.sys.query.AreaTreeQuery;
 import com.albedo.java.vo.sys.query.TreeResult;
@@ -90,7 +87,7 @@ public class AreaResource extends TreeVoResource<AreaService, AreaVo> {
     @Timed
     public ResponseEntity delete(@PathVariable String ids) {
         log.debug("REST request to delete Area: {}", ids);
-        service.delete(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
+        service.deleteByParentIds(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)), SecurityUtil.getCurrentUserId());
         return ResultBuilder.buildOk("删除区域成功");
     }
 

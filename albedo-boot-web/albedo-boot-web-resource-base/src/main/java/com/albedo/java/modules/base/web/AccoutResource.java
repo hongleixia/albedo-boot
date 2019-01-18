@@ -5,21 +5,18 @@ import com.albedo.java.common.security.SecurityAuthUtil;
 import com.albedo.java.common.security.SecurityConstants;
 import com.albedo.java.common.security.SecurityUtil;
 import com.albedo.java.common.security.jwt.TokenProvider;
-import com.albedo.java.modules.sys.domain.User;
 import com.albedo.java.modules.sys.service.UserService;
-import com.albedo.java.util.LoginUtil;
 import com.albedo.java.util.PublicUtil;
 import com.albedo.java.util.base.Assert;
 import com.albedo.java.util.config.SystemConfig;
 import com.albedo.java.util.domain.CustomMessage;
-import com.albedo.java.util.domain.Globals;
+import com.albedo.java.util.spring.SpringContextHolder;
 import com.albedo.java.vo.account.LoginVo;
 import com.albedo.java.vo.account.PasswordChangeVo;
 import com.albedo.java.vo.sys.UserVo;
 import com.albedo.java.web.rest.ResultBuilder;
 import com.albedo.java.web.rest.base.BaseResource;
 import com.albedo.java.web.rest.util.CookieUtil;
-import com.albedo.java.web.rest.util.RequestUtil;
 import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +31,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -108,6 +103,7 @@ public class AccoutResource extends BaseResource {
                 new UsernamePasswordAuthenticationToken(loginVo.getUsername(), loginVo.getPassword());
 
         try {
+            logger.info(SpringContextHolder.getApplicationContext().toString());
             Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             boolean rememberMe = (loginVo.isRememberMe() == null) ? false : loginVo.isRememberMe();
@@ -117,7 +113,7 @@ public class AccoutResource extends BaseResource {
             return new ResponseEntity<>(CustomMessage.createSuccessData(jwt), httpHeaders, HttpStatus.OK);
 
         } catch (AuthenticationException ae) {
-            log.trace("Authentication exception trace: {}", ae);
+            log.warn("Authentication exception trace: {}", ae);
             return ResultBuilder.buildFailed(HttpStatus.UNAUTHORIZED, ae instanceof BadCredentialsException ? "用户名或密码填写错误" : ae.getMessage());
         }
     }
